@@ -40,21 +40,21 @@ io.on('connect', (socket) => {
 
   socket.on('sendMessage', (message, callback) => {
     const user = getUser(socket.id);
-    try {
+    // try {
       async function quickStart() {
         // The text to translate
         const text = message;
         // The target language
         const target = 'es';
-        // Translates some text into Russian
+        // Translates some text into Spanish
         const [translation] = await translate.translate(text, target);
-        return translation;
+        io.to(user.room).emit('message', { user: user.name, text: message, translation: translation});
       }
-      io.to(user.room).emit('message', { user: user.name, text: message, translation: quickStart()});
-    }
-    catch (error) {
-      console.log(error)
-    }
+      quickStart();
+    // }
+    // catch (error) {
+    //   console.log(error)
+    // }
     callback();
   });
 
