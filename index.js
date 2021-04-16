@@ -15,7 +15,15 @@ const router = require('./router');
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
-
+{messages.map((message, i) => 
+  <div key={i}>
+      <div>{message}</div>
+      <div>{name}</div>
+      </div>)}{messages.map((message, i) => 
+            <div key={i}>
+                <div>{message}</div>
+                <div>{name}</div>
+                </div>)}
 app.use(cors());
 app.use(router);
 
@@ -44,7 +52,7 @@ io.on('connect', (socket) => {
       }
       quickStart()
     } catch (error) {
-      console.log(error)
+      console.log('There is an error')
     }
     callback();
   });
