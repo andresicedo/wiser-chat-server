@@ -52,7 +52,7 @@ io.on('connect', (socket) => {
       }
       quickStart()
     } catch (error) {
-      console.log('There is an error')
+      console.log(error)
     }
     callback();
   });
