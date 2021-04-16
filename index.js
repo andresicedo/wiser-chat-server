@@ -50,7 +50,7 @@ io.on('connect', (socket) => {
       
         // Translates some text into Russian
         const [translation] = await translate.translate(text, target);
-        io.to(user.room).emit('message', { user: user.name, text: message, translation });
+        io.to(user.room).emit('message', { user: user.name, text: message, translated: translation });
       }
       quickStart();
     }
