@@ -18,8 +18,7 @@ async function quickStart() {
 
   // Translates some text into Russian
   const [translation] = await translate.translate(text, target);
-  console.log(`Text: ${text}`);
-  console.log(`Translation: ${translation}`);
+  return translation;
 }
 
 quickStart();
