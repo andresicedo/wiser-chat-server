@@ -15,15 +15,7 @@ const router = require('./router');
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
-{messages.map((message, i) => 
-  <div key={i}>
-      <div>{message}</div>
-      <div>{name}</div>
-      </div>)}{messages.map((message, i) => 
-            <div key={i}>
-                <div>{message}</div>
-                <div>{name}</div>
-                </div>)}
+
 app.use(cors());
 app.use(router);
 
@@ -43,15 +35,13 @@ io.on('connect', (socket) => {
     callback();
   });
 
-  socket.on('sendMessage', (message, callback) => {
+  socket.on('sendMessage', async (message, callback) => {
     const user = getUser(socket.id);
     try {
-      async function quickStart() {
         const [translated] = await translate.translate(message, 'es');
         io.to(user.room).emit('message', { user: user.name, text: message, translated });
       }
-      quickStart()
-    } catch (error) {
+    catch (error) {
       console.log(error)
     }
     callback();
