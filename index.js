@@ -44,17 +44,13 @@ io.on('connect', (socket) => {
       async function quickStart() {
         // The text to translate
         const text = message;
-      
         // The target language
         const target = 'es';
-      
         // Translates some text into Russian
         const [translation] = await translate.translate(text, target);
-
-        io.to(user.room).emit('message', { user: user.name, text: message });
-        io.to(user.room).emit('translation', { translation })
+        return translation;
       }
-      quickStart();
+      io.to(user.room).emit('message', { user: user.name, text: message, translation: quickStart()});
     }
     catch (error) {
       console.log(error)
