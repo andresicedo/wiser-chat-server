@@ -2,11 +2,14 @@ const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
 const cors = require('cors');
-require('dotenv').config();
-const CREDENTIALS = JSON.parse(process.env.CREDENTIALS)
-const PROJECT_ID = CREDENTIALS.projectId
 const {Translate} = require('@google-cloud/translate').v2;
-const translate = new Translate({ projectId: PROJECT_ID });
+require('dotenv').config();
+const CREDENTIALS = JSON.parse(process.env.CREDENTIALS);
+
+const translate = new Translate({
+  credentials: CREDENTIALS,
+  projectId: CREDENTIALS.project_id
+});
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 
@@ -39,11 +42,17 @@ io.on('connect', (socket) => {
     const user = getUser(socket.id);
     try {
       async function quickStart() {
-        const [translated] = await translate.translate(message, 'es');
-        io.to(user.room).emit('message', { user: user.name, text: message, translated });
-        console.log(translated);
+        // The text to translate
+        const text = message;
+      
+        // The target language
+        const target = 'es';
+      
+        // Translates some text into Russian
+        const [translation] = await translate.translate(text, target);
+        io.to(user.room).emit('message', { user: user.name, text: message, translation });
       }
-      quickStart()
+      quickStart();
     }
     catch (error) {
       console.log(error)
