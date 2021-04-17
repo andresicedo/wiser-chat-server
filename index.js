@@ -27,16 +27,14 @@ io.on('connect', (socket) => {
     callback();
   });
 
-  socket.on('sendMessage', (message, callback) => {
+  socket.on('sendMessage', async (message, callback) => {
     const user = getUser(socket.id);
-    async function quickStart() {
+    try {
       const text = message;
       const target = 'es';
       const [translation] = await translate.translate(text, target);
       io.to(user.room).emit('message', { user: user.name, text: message, translation });
-    }
-    try {
-      quickStart()
+      console.log(translation);
     } catch (error) {
       console.error(error);
     }
