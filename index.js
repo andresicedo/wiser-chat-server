@@ -27,28 +27,21 @@ io.on('connect', (socket) => {
     callback();
   });
 
-  socket.on('sendMessage', (message, callback) => {
+  socket.on('sendMessage', async (message, callback) => {
     const user = getUser(socket.id);
-    io.to(user.room).emit('message', { user: user.name, text: message });
+    try {
+      // The text to translate
+      const text = message;
+      // The target language
+      const target = 'es';
+      // Translates text into Spanish
+      const [translation] = await translate.translate(text, target);
+      io.to(user.room).emit('message', { user: user.name, text: message, translation });
+    } catch (error) {
+      console.error(error);
+    }
     callback();
   });
-
-  async function quickStart() {
-    // The text to translate
-    const text = message;
-    // The target language
-    const target = 'es';
-    // Translates some text into Spanish
-    const [translation] = await translate.translate(text, target);
-    return translation;
-  }
-
-  socket.on('sendTranslation', (translation, callback) => {
-    const user = getUser(socket.id);
-    io.to(user.room).emit('translation', { user: user.name, translation });
-    callback();
-  });
-
 
   socket.on('disconnect', () => {
     const user = removeUser(socket.id);
