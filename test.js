@@ -14,11 +14,11 @@ async function quickStart() {
   const text = 'Hello, world!';
 
   // The target language
-  const target = 'es';
+  const target = 'fr';
 
   // Translates some text into Russian
   const [translation] = await translate.translate(text, target);
-  return translation;
+  console.log(translation)
 }
 
 quickStart();
