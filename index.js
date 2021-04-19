@@ -34,7 +34,6 @@ io.on('connect', (socket) => {
       const target = 'es';
       const [translation] = await translate.translate(text, target);
       io.to(user.room).emit('message', { user: user.name, text: message, translation });
-      console.log(translation);
     } catch (error) {
       console.error(error);
     }
@@ -50,5 +49,6 @@ io.on('connect', (socket) => {
     }
   })
 });
+
 
 server.listen(process.env.PORT || 5000, () => console.log(`Server has started.`));
