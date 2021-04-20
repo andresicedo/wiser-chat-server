@@ -33,7 +33,9 @@ io.on('connect', (socket) => {
       const text = message;
       const target = 'es';
       const [translation] = await translate.translate(text, target);
+      console.log(translation)
       io.to(user.room).emit('message', { user: user.name, text: message, translation });
+
     } catch (error) {
       console.error(error);
     }
